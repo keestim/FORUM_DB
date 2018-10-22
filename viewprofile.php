@@ -45,9 +45,43 @@
    else {
       header("Location: ./home.php");
    }
+
+
+   if (isset($_POST['follow'])){
+     switch ($_POST['follow']){
+       case 0:
+       $query = "DELETE FROM following WHERE user_id = " . $_SESSION['id'] . " AND followed_user_id = " . $_GET['profile_id'];
+       $result = mysqli_query($conn, $query);
+         break;
+
+        case 1:
+        $following_id = $_GET['profile_id'];
+        $user_id = $_SESSION['id'];
+        $query = "INSERT INTO following (user_id, followed_user_id) VALUES ('$user_id', '$following_id')";
+        $result = mysqli_query($conn, $query);
+          break;
+     }
+   }
  ?>
 
 <h1><?php echo $display_name; ?></h1>
+
+<form name="follow" method="post" action="">
+
+<?php
+$query = "SELECT * FROM following WHERE user_id = " . $_SESSION["id"] . " AND followed_user_id = " . $_GET["profile_id"];
+$result = mysqli_query($conn, $query);
+
+if (mysqli_num_rows($result) == 0){
+  echo "<button name='follow' type='submit' value='1'>FOLLOW</button>";
+}
+else{
+  echo "<button name='follow' type='submit' value='0'>UNFOLLOW</button>";
+}
+
+ ?>
+
+</form>
 
 <?php
    if (count($post_ids) > 0){
