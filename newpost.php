@@ -5,7 +5,7 @@
   <meta name="description" content="Forum Home Page"/>
   <meta name="keywords" content="HTML, CSS"/>
   <meta name="author" content="Timothy Keesman"/>
-  <link href="" rel="stylesheet" />
+  <link href="style/style.css" rel="stylesheet" />
   <title>Home</title>
 </head>
 <body>
@@ -13,6 +13,7 @@
 <?php
    require_once("settings.php");
    IsLoggedIn($conn);
+   include('header.inc');
 
    if (isset($_POST['submit'])){
       $title = $_POST['title'];
@@ -24,10 +25,11 @@
 
       //ideal use case for transactions (so use them!)
       //query a
-      $query = "INSERT INTO posts (post_title, post_content, post_date, view_count) VALUES ('$title', '$content', '$date', '0')";
+      $query = "INSERT INTO posts (post_title, post_content, post_date, view_count)
+      VALUES ('$title', '$content', '$date', '0')";
       $result = mysqli_query($conn, $query);
 
-      if(mysqli_connect_errno()){
+      if (mysqli_connect_errno()){
          echo mysqli_connect_error();
       }
 
@@ -36,7 +38,8 @@
 
       //get post id
       //insert post in user_posts
-      $query = "INSERT INTO user_posts (post_id, user_id) VALUES ('$last_post_id', '" . $_SESSION['id'] ."')";
+      $query = "INSERT INTO user_posts (post_id, user_id)
+      VALUES ('$last_post_id', '" . $_SESSION['id'] ."')";
       $result = mysqli_query($conn, $query);
 
 
@@ -48,6 +51,9 @@
 
             //select tags
             foreach ($tagArray as $tag){
+              if ($tag == ""){
+                continue;
+              }
                $query = "SELECT * FROM tags WHERE tag_name = '$tag'";
                $result = mysqli_query($conn, $query);
                if (mysqli_num_rows($result)==0){
@@ -60,7 +66,8 @@
                      $tag_id = $row['tag_id'];
                   }
                }
-               $linkPostTagQuery = "INSERT INTO post_tags (post_id, tag_id) VALUES ('$last_post_id', '$tag_id')";
+               $linkPostTagQuery = "INSERT INTO post_tags (post_id, tag_id)
+               VALUES ('$last_post_id', '$tag_id')";
                $postTagResult = mysqli_query($conn, $linkPostTagQuery);
             }
          }

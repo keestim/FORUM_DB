@@ -5,15 +5,16 @@
   <meta name="description" content="Forum Signup Page"/>
   <meta name="keywords" content="HTML, CSS, PHP"/>
   <meta name="author" content="Timothy Keesman"/>
-  <link href="" rel="stylesheet" />
+  <link href="style/style.css" rel="stylesheet" />
   <title>Sign Up</title>
 </head>
 <body>
 
 <?php
 require_once("settings.php");
-
 DatabaseExists($conn);
+include('header.inc');
+
 
 if (isset($_POST["submit"])){
 
@@ -26,7 +27,8 @@ if (isset($_POST["submit"])){
    $password = $_POST['password'];
    $confirm_password = $_POST["confirm_password"];
 
-   $query = "INSERT INTO users (user_first_name, user_last_name, user_display_name, user_email, user_password, user_dob) VALUES ('$first_name', '$last_name', '$display_name', '$email', '$password', '$dob')";
+   $query = "INSERT INTO users (user_first_name, user_last_name, user_display_name, user_email, user_password, user_dob)
+   VALUES ('$first_name', '$last_name', '$display_name', '$email', '$password', '$dob')";
    $result = mysqli_query($conn, $query);
 
    if(mysqli_connect_errno()){

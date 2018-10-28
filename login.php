@@ -19,7 +19,8 @@ if (isset($_POST["submit"])){
    $username = $_POST["username"];
    $password = $_POST["password"];
 
-   $query = "SELECT * FROM users WHERE (user_display_name = '$username' AND user_password = '$password')
+   $query = "SELECT * FROM users WHERE (user_display_name = '$username'
+            AND user_password = '$password')
             OR (user_email = '$username' AND user_password = '$password')";
 
    $result = mysqli_query($conn, $query);
@@ -31,10 +32,9 @@ if (isset($_POST["submit"])){
       while ($row = mysqli_fetch_assoc($result)){
          //if there is a result returned it must be correct
          $_SESSION["id"] = $row['user_id'];
-         header("Location: home.php");
+         header("Location: index.php");
       }
    }
-
 }
 ?>
 
@@ -51,6 +51,8 @@ if (isset($_POST["submit"])){
 
    <input type="submit" name="submit">
 </form>
+
+<a href="signup.php">SIGN UP</a>
 
 </body>
 </html>
