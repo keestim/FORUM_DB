@@ -78,20 +78,22 @@
 
 <h1>New Post</h1>
 <hr/>
-<form name ="post" method="post" action="">
-   <h2>Title</h2>
-   <input type="text" name="title">
+<div class="post_summary">
+   <form name ="post" method="post" action="">
+      <h2>Title</h2>
+      <input type="text" name="title">
 
-   <h2>Post Content</h2>
-   <textarea name="content"></textarea>
+      <h2>Post Content</h2>
+      <textarea name="content"></textarea>
 
-   <h2>Tags</h2>
-   <input type="text" name="tags">
-   <br/>
-   <br/>
-   <p>Use #tagname, to enter a tag and seperate each tag with a space</p>
-   <input type="submit" name="submit">
-</form>
+      <h2>Tags</h2>
+      <input type="text" name="tags">
+      <br/>
+      <br/>
+      <p>Use #tagname, to enter a tag and seperate each tag with a space</p>
+      <input type="submit" name="submit">
+   </form>
+</div>
 
 </body>
 </html>

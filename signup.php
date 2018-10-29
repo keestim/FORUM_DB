@@ -41,29 +41,30 @@ if (isset($_POST["submit"])){
 ?>
 
 <h1>Sign Up</h1>
+<div class = "post_summary">
+   <form method="post" name ="signup" action="">
+      <h2>First Name</h2>
+      <input type="text" name="first_name"/>
+      <h2>Last Name</h2>
+      <input type="text" name="last_name"/>
+      <h2>DOB</h2>
+      <input type="date" name="dob"/>
 
-<form method="post" name ="signup" action="">
-   <h2>First Name</h2>
-   <input type="text" name="first_name"/>
-   <h2>Last Name</h2>
-   <input type="text" name="last_name"/>
-   <h2>DOB</h2>
-   <input type="date" name="dob"/>
+      <hr/>
 
-   <hr/>
-
-   <h2>Display Name</h2>
-   <input type="text" name="display_name"/>
-   <h2>Email</h2>
-   <input type="email" name="email"/>
-   <h2>Password</h2>
-   <input type="password" name="password"/>
-   <h2>Confirm Password</h2>
-   <input type="password" name="confirm_password"/>
-   <br/>
-   <br/>
-   <input type="submit" name="submit">
-</form>
+      <h2>Display Name</h2>
+      <input type="text" name="display_name"/>
+      <h2>Email</h2>
+      <input type="email" name="email"/>
+      <h2>Password</h2>
+      <input type="password" name="password"/>
+      <h2>Confirm Password</h2>
+      <input type="password" name="confirm_password"/>
+      <br/>
+      <br/>
+      <input type="submit" name="submit">
+   </form>
+</div>
 
 </body>
 </html>

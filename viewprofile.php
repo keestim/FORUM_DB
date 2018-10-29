@@ -61,7 +61,7 @@
    }
  ?>
 
-<h1><?php echo $display_name; ?></h1>
+<?php echo "<h1>" . $display_name , "</h1>"; ?>
 
 <?php
 if ($_GET['profile_id']){
@@ -72,10 +72,10 @@ if ($_GET['profile_id']){
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) == 0){
-      echo "<button name='follow' type='submit' value='1'>FOLLOW</button>";
+      echo "<button class='follow' name='follow' type='submit' value='1'>FOLLOW</button>";
     }
     else{
-      echo "<button name='follow' type='submit' value='0'>UNFOLLOW</button>";
+      echo "<button class='follow' name='follow' type='submit' value='0'>UNFOLLOW</button>";
     }
     echo "</form>";
   }
@@ -90,13 +90,7 @@ if ($_GET['profile_id']){
 
          if (mysqli_num_rows($result) != 0){
             while ($row = mysqli_fetch_assoc($result)){
-              echo "<div class='post_summary'>";
-              echo "<h2>" . $row['post_title'] . "</h2>";
-              echo "<p>" . $row['post_date'] . "</p>";
-              echo "<p>" . getPostTags($conn, $row['post_id']) . "</p>";
-              echo "<p>" . $row['post_content'] . "</p>";
-              echo "<p><a href=viewpost.php?post_id=" . $row['post_id'] . ">VIEW POST</a></p>";
-              echo "</div>";
+               DisplayPostSummary($row, $conn);
             }
          }
       }

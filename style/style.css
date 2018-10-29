@@ -28,26 +28,13 @@ same
    overflow: auto;
 }
 
-.cheapest{
-   background-color: #0DFF8D;
-}
-
-.special {
-   color: white;
-   font-weight:bold;
-}
-
-.maintenance{
-   text-align: center;
-   background-color: white;
-   display: block;
+.search_result{
    width: 80%;
    margin-left: 10%;
    margin-right: 10%;
-   padding-top: 2%;
-   padding-bottom: 2%;
+   margin-top: 2%;
+   background-color: white;
 }
-
 
 button{
    background-color: #f44336;
@@ -60,6 +47,10 @@ button:hover {
     background-color: white;
     color: black;
     border: 2px solid red;
+}
+
+h1 {
+   text-align: center;
 }
 
 .layout{
@@ -107,9 +98,8 @@ li h1:hover{
    margin-left: 10%;
    margin-right: 10%;
    background-color: white;
-   display: flex;
-   flex-wrap: wrap;
-   flex-direction: row;
+
+
    overflow: auto;
    clear: both;
 }
@@ -125,6 +115,11 @@ li h1:hover{
    margin: 0;
    overflow: auto;
    padding-top: 1%;
+}
+
+.follow{
+   float: right;
+   right: 5%;
 }
 
 .post_whole{
@@ -160,15 +155,25 @@ li h1:hover{
    transition-duration: 1s;
 }
 
+.tag{
+   display: inline-flex;
+   flex-wrap: wrap;
+   flex-direction: row;
+   overflow: auto;
+   clear: both;
+   width: 5%;
+   text-align: center;
+   align: center;
+   align-items: center;
+}
+
 .tag:link, .tag:visited{
   background-color: #f44336;
   color: white;
   padding: 14px 25px;
   margin-left: 2%;
   margin-right: 2%;
-  text-align: center;
   text-decoration: none;
-  display: inline-block;
 }
 
 .tag:hover, .tag:active{
@@ -239,13 +244,10 @@ table{
 .container {
    align: center;
    align-items: center;
-   width: 75%;
-   padding: 2.5%;
-   margin-left: 10%;
-   margin-right: 10%;
+
    overflow: auto;
    clear: both;
-   background-color: red;
+
    display: flex;
    flex-wrap: wrap;
    flex-direction: row;
