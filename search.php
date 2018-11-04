@@ -33,6 +33,8 @@ if (isset($_POST['search_term'])){
   echo "<div class='container'>";
 
   $search = $_POST['search_term'];
+  $search = check_isset($search);
+
   $query_match_tags = "SELECT * FROM tags WHERE tag_name LIKE '%$search%' ORDER BY tag_name";
   $returned_tag = mysqli_query($conn, $query_match_tags);
 

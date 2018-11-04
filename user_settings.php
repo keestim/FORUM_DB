@@ -30,6 +30,7 @@
         while ($output = mysqli_fetch_assoc($result)){
             if ($output['user_password'] == $_POST['current_password']){
               $new_password = $_POST['new_password'];
+              $new_password = check_isset($new_password);
               $update_password_query = "UPDATE users
               WHERE user_id = '$user_id'
               SET user_password = $new_password";
@@ -45,9 +46,16 @@
 
    if (isset($_POST['update_details'])){
      $first_name = $_POST['first_name'];
+     $first_name = check_isset($first_name);
+
      $last_name = $_POST['last_name'];
+     $last_name = check_isset($last_name);
+
      $display_name = $_POST['display_name'];
+     $display_name = check_isset($display_name);
+
      $dob = $_POST['user_dob'];
+     $dob = check_isset($dob);
 
      $query = "UPDATE users
      SET user_first_name = '$first_name', user_last_name = '$last_name', user_display_name = '$display_name', user_dob = '$dob'

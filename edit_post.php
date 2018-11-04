@@ -55,12 +55,19 @@
 
      if (isset($_POST['save_post'])){
        $post_content = $_POST['content'];
+       $post_content = check_isset($post_content);
 
        $post_title = $_POST['title'];
+       $post_title = check_isset($post_title);
 
        $query = "UPDATE posts SET modified_date='$date', post_title='$post_title', post_content='$post_content' WHERE post_id =" . $_GET['post_id'];
        $result = mysqli_query($conn, $query);
        header("Location: viewpost.php?post_id=" . $_GET['post_id']);
+     }
+
+     if (isset($_POST['delete_post'])){
+       DeletePost($conn, $_GET['post_id']);
+       Header("Location: index.php");
      }
    ?>
 

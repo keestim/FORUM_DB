@@ -8,6 +8,7 @@ description: Main styling for website
 html, body{
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -35,6 +36,18 @@ same
   font-weight: bold;
 }
 
+.reply_container{
+  border-left: 2px solid red;
+  border-top: 2px solid red;
+  float: left;
+  display: inline-block;
+  clear: both;
+  width: 100%;
+  margin-top: 0.5%;
+  overflow: visible;
+  background-color: white;
+}
+
 textarea{
   width: 95%;
   display: inline-block;
@@ -43,16 +56,8 @@ textarea{
   margin-left: 2.5%;
   margin-right: 2.5%;
   font-family: sans-serif;
+  min-height: 4em;
 
-}
-
-.cheapest{
-   background-color: #0DFF8D;
-}
-
-.special {
-   color: white;
-   font-weight:bold;
 }
 
 .maintenance{
@@ -191,10 +196,34 @@ li h1:hover{
    flex-direction: row;
    overflow: auto;
    clear: both;
-   width: 5%;
+
    text-align: center;
    align: center;
    align-items: center;
+}
+
+.comment{
+  background-color: white;
+  padding: 1%;
+  display: inline-block;
+  clear: both;
+  float: left;
+  width: auto;
+  margin-bottom: 0.5%;
+  overflow: visible;
+}
+
+.reply_comment{
+  background-color: white;
+  margin-left: 20%;
+  padding: 1%;
+  display: inline-block;
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-bottom: 0.5%;
+  overflow: visible;
+
 }
 
 .tag:link, .tag:visited{
@@ -224,6 +253,24 @@ li h1:hover{
 }
 
 .modify:hover, .modify:active{
+  background-color: red;
+  transition-duration: 0.5s;
+}
+
+.modify_left{
+  background-color: #f44336;
+  color: white;
+  padding: 14px 25px;
+  margin-left: 2%;
+  margin-right: 2%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  float: left;
+  clear: both;
+}
+
+.modify_left:hover, .modify_left:active{
   background-color: red;
   transition-duration: 0.5s;
 }
@@ -353,6 +400,36 @@ header h1{
 
 .menu ul li img {
    width: 10%;
+}
+
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    float: left;
+    clear: both;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    margin-top: 0.5%;
+    display: none;
+    float: left;
+    overflow: visible;
+    clear: both;
+    width: auto;
+    box-sizing: content-box;
 }
 
 @media only screen and (max-width: 1600px) {

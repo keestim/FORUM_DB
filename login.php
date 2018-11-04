@@ -17,7 +17,9 @@ DatabaseExists($conn);
 
 if (isset($_POST["submit"])){
    $username = $_POST["username"];
+   $username = check_isset($username);
    $password = $_POST["password"];
+   $password = check_isset($password);
 
    $query = "SELECT * FROM users WHERE (user_display_name = '$username'
             AND user_password = '$password')

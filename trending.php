@@ -17,14 +17,29 @@ include('header.inc');
 ?>
 
 <?php
-   echo "<h1>TOP 10 TRENDING</h1>";
-   $query = "SELECT * FROM posts ORDER BY view_count DESC";
+   echo "<h1>TOP 10 POST</h1>";
+   $query = "SELECT * FROM posts ORDER BY view_count DESC LIMIT 10";
    $result = mysqli_query($conn, $query);
 
    if (mysqli_num_rows($result)==0){}
    else {
-      while ($tag = mysqli_fetch_assoc($returned_tag)){
-        echo "<a class='tag' href=viewtag.php?tag_id=" . $tag['tag_id'] . ">#" . $tag['tag_name'] . "</a><br/>";
+      while ($output = mysqli_fetch_assoc($result)){
+        DisplayPostSummary($output, $conn);
+      }
+   }
+
+
+   echo "<h1>TOP 10 TRENDING TAGS</h1>";
+   $query = "SELECT post_tags.tag_id, tags.tag_name, COUNT(post_tags.tag_id)
+   FROM post_tags
+   INNER JOIN tags ON post_tags.tag_id = tags.tag_id
+   GROUP BY post_tags.tag_id ASC LIMIT 10";
+   $result = mysqli_query($conn, $query);
+
+   if (mysqli_num_rows($result) == 0){}
+   else {
+      while ($output = mysqli_fetch_assoc($result)){
+        echo "<a class='modify_left' href='viewtag.php?tag_id=" . $output['tag_id'] ."'><h2>" . $output['tag_name'] . "</h2></a>";
       }
    }
 ?>

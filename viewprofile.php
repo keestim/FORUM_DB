@@ -7,6 +7,8 @@
   <meta name="author" content="Timothy Keesman"/>
   <link href="style/style.css" rel="stylesheet" />
   <title>Home</title>
+  <script src="./scripts/accordion.js">
+  </script>
 </head>
 <body>
 
@@ -29,7 +31,10 @@
          }
       }
 
-      $query = "SELECT * FROM user_posts WHERE user_id = " . $_GET['profile_id'];
+      $select_profile = $_GET['profile_id'];
+      $query = "SELECT * FROM user_posts
+      INNER JOIN posts ON user_posts.post_id = posts.post_id
+      WHERE user_id = '$select_profile' ORDER BY posts.post_date DESC";
       $result = mysqli_query($conn, $query);
 
       $post_ids = array();
@@ -68,13 +73,15 @@ if ($_GET['profile_id']){
   if  ($_GET['profile_id'] != $_SESSION['id'])
   {
     echo '<form name="follow" method="post" action="">';
-    $query = "SELECT * FROM following WHERE user_id = " . $_SESSION["id"] . " AND followed_user_id = " . $_GET["profile_id"];
+    $query = "SELECT * FROM following
+    WHERE user_id = " . $_SESSION["id"] . " AND followed_user_id = " . $_GET['profile_id'];
     $result = mysqli_query($conn, $query);
 
     if (mysqli_num_rows($result) == 0){
       echo "<button class='follow' name='follow' type='submit' value='1'>FOLLOW</button>";
     }
-    else{
+    else
+    {
       echo "<button class='follow' name='follow' type='submit' value='0'>UNFOLLOW</button>";
     }
     echo "</form>";

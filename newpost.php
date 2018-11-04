@@ -17,9 +17,13 @@
 
    if (isset($_POST['submit'])){
       $title = $_POST['title'];
+      $title = check_isset($title);
+
       $content = $_POST['content'];
-      echo $content;
+      $content = check_isset($content);
+
       $tags = $_POST['tags'];
+      $tags = check_isset($tags);
 
       DatabaseExists($conn);
 
@@ -84,7 +88,7 @@
       <input type="text" name="title">
 
       <h2>Post Content</h2>
-      <textarea name="content"></textarea>
+      <textarea name="content" data-adaptheight></textarea>
 
       <h2>Tags</h2>
       <input type="text" name="tags">
@@ -94,6 +98,30 @@
       <input type="submit" name="submit">
    </form>
 </div>
+
+<script>
+(function() {
+    function adjustHeight(textareaElement, minHeight) {
+        var diff = parseInt(window.getComputedStyle(el).height, 10) - el.clientHeight;
+        el.style.height = 0;
+        el.style.height = Math.max(minHeight, el.scrollHeight + diff) + 'px';
+    }
+
+    var textAreas = document.querySelectorAll('textarea[data-adaptheight]');
+
+    for (var i = 0, l = textAreas.length; i < l; i++) {
+        var el = textAreas[i];
+        el.style.boxSizing = el.style.mozBoxSizing = 'border-box';
+        el.style.overflowY = 'hidden';
+        var minHeight = el.scrollHeight;
+
+        el.addEventListener('input', function() { adjustHeight(el, minHeight); });
+        window.addEventListener('resize', function() { adjustHeight(el, minHeight); });
+
+        adjustHeight(el, minHeight);
+    }
+}());
+</script>
 
 </body>
 </html>
