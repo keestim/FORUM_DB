@@ -14,11 +14,6 @@ require_once("settings.php");
 IsLoggedIn($conn);
 DatabaseExists($conn);
 include('header.inc');
-
-
-
-
-
 ?>
 
 

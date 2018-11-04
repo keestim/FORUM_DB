@@ -7,6 +7,7 @@ description: Main styling for website
 */
 html, body{
   height: 100%;
+  width: 100%;
 }
 
 body {
@@ -26,6 +27,23 @@ same
    overflow: auto;
    height: 25%;
    overflow: auto;
+}
+
+.title_input{
+  text-align: center;
+  font-size: 24pt;
+  font-weight: bold;
+}
+
+textarea{
+  width: 95%;
+  display: inline-block;
+  height: auto;
+  display: block;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  font-family: sans-serif;
+
 }
 
 .cheapest{
@@ -172,6 +190,23 @@ li h1:hover{
 }
 
 .tag:hover, .tag:active{
+  background-color: red;
+  transition-duration: 0.5s;
+}
+
+.modify{
+  background-color: #f44336;
+  color: white;
+  padding: 14px 25px;
+  margin-left: 2%;
+  margin-right: 2%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  float: right;
+}
+
+.modify:hover, .modify:active{
   background-color: red;
   transition-duration: 0.5s;
 }

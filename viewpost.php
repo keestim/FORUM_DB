@@ -50,10 +50,12 @@
             $display_name = $post['user_display_name'];
             $user_id = $post['user_id'];
          }
-         $newViews = $views + 1;
-         $updateViewsQuery = "UPDATE posts SET view_count = $newViews
-         WHERE post_id = '" . $_GET["post_id"] ."'";
-         $update = mysqli_query($conn, $updateViewsQuery);
+         if ($_SESSION['id'] != $user_id){
+           $newViews = $views + 1;
+           $updateViewsQuery = "UPDATE posts SET view_count = $newViews
+           WHERE post_id = '" . $_GET["post_id"] ."'";
+           $update = mysqli_query($conn, $updateViewsQuery);
+         }
       }
 
       $comment_ids = array();
@@ -77,11 +79,15 @@
      VALUES ('" . $_SESSION['id'] ."', '" . $_POST['reply_comment'] . "', '$date', '" . $_POST['reply'] . "')";
      $result = mysqli_query($conn, $query);
    }
- ?>
 
+   if (isset($_POST['edit_post'])){
+     header("Location: edit_post.php?post_id=" . $_GET['post_id']);
+   }
+ ?>
 <div class="post_whole">
 <h1><?php echo $title; ?></h1>
 <p>Date posted: <?php echo $date; ?></p>
+
 <p>Views : <?php echo $views; ?></p>
 <p><?php getPostTags($conn, $_GET['post_id']) ?></p>
 
@@ -89,6 +95,17 @@
 
 <br/>
 <p><?php echo $content; ?></p>
+<?php
+  if ($user_id == $_SESSION['id']){
+    echo "<form method='post' action=''>";
+    echo "<p>";
+    echo "<button type='submit' class='modify' name='delete_post'>DELETE</button>";
+    echo "<button type='submit' class='modify' name='edit_post'>EDIT</button>";
+    echo "</p>";
+    echo "</form>";
+  }
+?>
+
 </div>
 <br/>
 <h2>Comment</h2>
@@ -100,7 +117,6 @@
 </form>
 
 <?php
-
 echo "num comments: " . count($comment_ids);
 if (count($comment_ids) > 0){
    foreach ($comment_ids as $id){
