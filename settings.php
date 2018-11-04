@@ -1,10 +1,10 @@
 <?php
    $host = "localhost";
    $sql_db = "forum";
+   require_once("common_functions.php");
 
    //@ prevents any error from being displayed from the sql query
    $conn = mysqli_connect($host, 'root', '', $sql_db);
-
    $date = date("Y-m-d");
 
    if (!$conn) {
@@ -81,28 +81,5 @@ function IsLoggedIn($conn){
       }
    }
 }
-
-
-function getPostTags($conn, $post_id){
-  $query = "SELECT * FROM post_tags
-          INNER JOIN tags ON post_tags.tag_id = tags.tag_id
-          WHERE post_tags.post_id = '$post_id'";
-
-  $result = mysqli_query($conn, $query);
-  $tag_names_array = array();
-
-  if (mysqli_num_rows($result) == 0)
-  {
-  }
-  else {
-     while ($tag = mysqli_fetch_assoc($result)){
-       $tag_id = $tag['tag_id'];
-       echo "<a class='tag' href='viewtag.php?tagid=$tag_id'>#" . $tag['tag_name'] . "</a>";
-     }
-     //return $tag_names_array;
-  }
-}
-
-
 
 ?>
