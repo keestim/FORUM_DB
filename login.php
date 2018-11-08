@@ -15,6 +15,8 @@ require_once("settings.php");
 
 DatabaseExists($conn);
 
+$query_error = false;
+
 if (isset($_POST["submit"])){
    $username = $_POST["username"];
    $username = check_isset($username);
@@ -26,6 +28,9 @@ if (isset($_POST["submit"])){
             OR (user_email = '$username' AND user_password = '$password')";
 
    $result = mysqli_query($conn, $query);
+   if (mysqli_error($conn) > ""){
+     $query_error = true;
+   }
 
    if (mysqli_num_rows($result)==0){
       echo "Wrong Username or Password Entered!";
@@ -36,6 +41,13 @@ if (isset($_POST["submit"])){
          $_SESSION["id"] = $row['user_id'];
          header("Location: index.php");
       }
+   }
+
+   if ($query_error){
+     mysqli_rollback($conn);
+   }
+   else {
+     mysqli_commit($conn);
    }
 }
 ?>

@@ -14,6 +14,7 @@ require_once("settings.php");
 IsLoggedIn($conn);
 DatabaseExists($conn);
 include('header.inc');
+$query_error = false;
 ?>
 
 <div class="search_container">
@@ -35,8 +36,12 @@ if (isset($_POST['search_term'])){
   $search = $_POST['search_term'];
   $search = check_isset($search);
 
+  //search for tags that contain search term
   $query_match_tags = "SELECT * FROM tags WHERE tag_name LIKE '%$search%' ORDER BY tag_name";
   $returned_tag = mysqli_query($conn, $query_match_tags);
+  if (mysqli_error($conn) > ""){
+    $query_error = true;
+  }
 
   if (mysqli_num_rows($returned_tag)==0){
   }
@@ -51,8 +56,12 @@ if (isset($_POST['search_term'])){
   echo "<div class='search_result'>";
   echo "<h2>Users:</h2>";
   echo "<div class='container'>";
+  //searchs for user with a display name containing the search term
   $query_match_users = "SELECT * FROM users WHERE user_display_name LIKE '%$search%' ORDER BY user_display_name";
   $returned_users = mysqli_query($conn, $query_match_users);
+  if (mysqli_error($conn) > ""){
+    $query_error = true;
+  }
 
   if (mysqli_num_rows($returned_users)==0){
   }
@@ -64,12 +73,15 @@ if (isset($_POST['search_term'])){
 
   echo "</div></div>";
 
-
   echo "<div class='search_result'>";
   echo "<h2>Posts:</h2>";
   echo "<div class='container'>";
+  //searches for posts that have contents or titles containing the search term
   $query_match_posts = "SELECT * FROM posts WHERE post_title LIKE '%$search%' OR post_content LIKE '%$search%' ORDER BY post_title";
   $returned_posts = mysqli_query($conn, $query_match_posts);
+  if (mysqli_error($conn) > ""){
+    $query_error = true;
+  }
 
   if (mysqli_num_rows($returned_posts)==0){
   }
@@ -80,7 +92,13 @@ if (isset($_POST['search_term'])){
   }
 
   echo "</div></div>";
+}
 
+if ($query_error){
+  mysqli_rollback($conn);
+}
+else {
+  mysqli_commit($conn);
 }
 ?>
 

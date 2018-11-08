@@ -14,12 +14,16 @@ require_once("settings.php");
 IsLoggedIn($conn);
 DatabaseExists($conn);
 include('header.inc');
+$query_error = false;
 ?>
 
 <?php
    echo "<h1>TOP 10 POST</h1>";
    $query = "SELECT * FROM posts ORDER BY view_count DESC LIMIT 10";
    $result = mysqli_query($conn, $query);
+   if (mysqli_error($conn) > ""){
+     $query_error = true;
+   }
 
    if (mysqli_num_rows($result)==0){}
    else {
@@ -28,13 +32,15 @@ include('header.inc');
       }
    }
 
-
    echo "<h1>TOP 10 TRENDING TAGS</h1>";
    $query = "SELECT post_tags.tag_id, tags.tag_name, COUNT(post_tags.tag_id)
    FROM post_tags
    INNER JOIN tags ON post_tags.tag_id = tags.tag_id
    GROUP BY post_tags.tag_id ASC LIMIT 10";
    $result = mysqli_query($conn, $query);
+   if (mysqli_error($conn) > ""){
+     $query_error = true;
+   }
 
    if (mysqli_num_rows($result) == 0){}
    else {
@@ -42,8 +48,13 @@ include('header.inc');
         echo "<a class='modify_left' href='viewtag.php?tag_id=" . $output['tag_id'] ."'><h2>" . $output['tag_name'] . "</h2></a>";
       }
    }
+
+   if ($query_error){
+     mysqli_rollback($conn);
+   }
+   else {
+     mysqli_commit($conn);
+   }
 ?>
-
-
 </body>
 </html>

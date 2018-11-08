@@ -137,7 +137,8 @@ function DisplayComment($output_array){
   }
 }
 
-
+//uses to check if the input variable is set
+//removes special characters and trims string
 function check_isset($input)
 {
   if (isset($input)){

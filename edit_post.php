@@ -10,66 +10,86 @@
 </head>
 <body>
   <?php
-     require_once("settings.php");
-     IsLoggedIn($conn);
-     DatabaseExists($conn);
-     include('header.inc');
+    require_once("settings.php");
+    IsLoggedIn($conn);
+    DatabaseExists($conn);
+    include('header.inc');
 
-     if (isset($_GET['post_id'])){
-     $query = "SELECT * FROM posts
-     INNER JOIN user_posts ON user_posts.post_id = posts.post_id
-     INNER JOIN users ON user_posts.user_id = users.user_id
-     WHERE user_posts.post_id ='" . $_GET["post_id"] . "'
-     AND user_posts.user_id = '" . $_SESSION["id"] . "'";
+    $query_error = false;
 
-     $result = mysqli_query($conn, $query);
+    if (isset($_GET['post_id'])){
+      $query = "SELECT * FROM posts
+      INNER JOIN user_posts ON user_posts.post_id = posts.post_id
+      INNER JOIN users ON user_posts.user_id = users.user_id
+      WHERE user_posts.post_id ='" . $_GET["post_id"] . "'
+      AND user_posts.user_id = '" . $_SESSION["id"] . "'";
 
-     if (mysqli_num_rows($result)==0){
-        header("Location: ./index.php");
-     }
-     else {
-        while ($post = mysqli_fetch_assoc($result)){
-           $title = $post['post_title'];
-           $content = $post['post_content'];
-           $date = $post['post_date'];
-           $views = $post['view_count'];
-           $display_name = $post['user_display_name'];
-           $user_id = $post['user_id'];
-        }
-        if ($_SESSION['id'] != $user_id){
-          $newViews = $views + 1;
-          $updateViewsQuery = "UPDATE posts SET view_count = $newViews
-          WHERE post_id = '" . $_GET["post_id"] ."'";
-          $update = mysqli_query($conn, $updateViewsQuery);
-        }
+      $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+      if (mysqli_error($conn) > ""){
+        $query_error = true;
       }
+
+      if (mysqli_num_rows($result)==0){
+         header("Location: ./index.php");
+      }
+      else {
+       while ($post = mysqli_fetch_assoc($result)){
+          $title = $post['post_title'];
+          $content = $post['post_content'];
+          $date = $post['post_date'];
+          $views = $post['view_count'];
+          $display_name = $post['user_display_name'];
+          $user_id = $post['user_id'];
+       }
+       if ($_SESSION['id'] != $user_id){
+         $newViews = $views + 1;
+         $updateViewsQuery = "UPDATE posts SET view_count = $newViews
+         WHERE post_id = '" . $_GET["post_id"] ."'";
+
+         $update = mysqli_query($conn, $updateViewsQuery);
+         if (mysqli_error($conn) > ""){
+           $query_error = true;
+         }
+       }
      }
-     else{
-       header("Location: ./index.php");
+   }
+   else{
+     header("Location: ./index.php");
+   }
+
+   if (isset($_POST['undo_post'])){
+     header("Location: viewpost.php?post_id=" . $_GET['post_id']);
+   }
+
+   if (isset($_POST['save_post'])){
+     $post_content = $_POST['content'];
+     $post_content = check_isset($post_content);
+
+     $post_title = $_POST['title'];
+     $post_title = check_isset($post_title);
+
+     //updates the post with the user's inputted data
+     $query = "UPDATE posts SET modified_date='$date', post_title='$post_title', post_content='$post_content' WHERE post_id =" . $_GET['post_id'];
+     $result = mysqli_query($conn, $query);
+     if (mysqli_error($conn) > ""){
+       $query_error = true;
      }
 
+     header("Location: viewpost.php?post_id=" . $_GET['post_id']);
+   }
 
-     if (isset($_POST['undo_post'])){
-       header("Location: viewpost.php?post_id=" . $_GET['post_id']);
-     }
+   if (isset($_POST['delete_post'])){
+     DeletePost($conn, $_GET['post_id']);
+     Header("Location: index.php");
+   }
 
-     if (isset($_POST['save_post'])){
-       $post_content = $_POST['content'];
-       $post_content = check_isset($post_content);
-
-       $post_title = $_POST['title'];
-       $post_title = check_isset($post_title);
-
-       $query = "UPDATE posts SET modified_date='$date', post_title='$post_title', post_content='$post_content' WHERE post_id =" . $_GET['post_id'];
-       $result = mysqli_query($conn, $query);
-       header("Location: viewpost.php?post_id=" . $_GET['post_id']);
-     }
-
-     if (isset($_POST['delete_post'])){
-       DeletePost($conn, $_GET['post_id']);
-       Header("Location: index.php");
-     }
-   ?>
+   if ($query_error){
+     mysqli_rollback($conn);
+   }
+   else {
+     mysqli_commit($conn);
+   }
+ ?>
 
    <div class="post_whole">
    <form method="post" action="">

@@ -5,14 +5,17 @@
 
    //@ prevents any error from being displayed from the sql query
    $conn = mysqli_connect($host, 'root', '', $sql_db);
+   mysqli_autocommit($conn,FALSE);
    $date = date("Y-m-d");
 
    if (!$conn) {
        echo 'Could not connect to mysql';
    }
 
+   //allows use of session variables
    session_start();
 
+//creates tables if they don't already exist
 function DatabaseExists($conn){
    if(@mysqli_query("DESCRIBE `tags`"))
    {}
@@ -71,6 +74,7 @@ function DatabaseExists($conn){
    }
 }
 
+//checks the user is logged in, if they aren't they are sent to the login page
 function IsLoggedIn($conn){
    if (!isset($_SESSION['id'])){
       header("Location: ./login.php");

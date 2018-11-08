@@ -15,6 +15,8 @@
    IsLoggedIn($conn);
    include('header.inc');
 
+   $query_error = false;
+
    if (isset($_POST['submit'])){
       $title = $_POST['title'];
       $title = check_isset($title);
@@ -32,20 +34,24 @@
       $query = "INSERT INTO posts (post_title, post_content, post_date, view_count)
       VALUES ('$title', '$content', '$date', '0')";
       $result = mysqli_query($conn, $query);
+      if (mysqli_error($conn) > ""){
+        $query_error = true;
+      }
 
       if (mysqli_connect_errno()){
          echo mysqli_connect_error();
       }
 
       $last_post_id = mysqli_insert_id($conn);
-      echo $last_post_id;
 
       //get post id
       //insert post in user_posts
       $query = "INSERT INTO user_posts (post_id, user_id)
       VALUES ('$last_post_id', '" . $_SESSION['id'] ."')";
       $result = mysqli_query($conn, $query);
-
+      if (mysqli_error($conn) > ""){
+        $query_error = true;
+      }
 
       if (isset($tags)){
          if ($tags > " "){
@@ -60,9 +66,17 @@
               }
                $query = "SELECT * FROM tags WHERE tag_name = '$tag'";
                $result = mysqli_query($conn, $query);
+               if (mysqli_error($conn) > ""){
+                 $query_error = true;
+               }
+
                if (mysqli_num_rows($result)==0){
                   $queryinsertTag = "INSERT INTO tags (tag_name) VALUES ('$tag')";
                   $tagInsertResult = mysqli_query($conn, $queryinsertTag);
+                  if (mysqli_error($conn) > ""){
+                    $query_error = true;
+                  }
+
                   $tag_id = mysqli_insert_id($conn);
                }
                else {
@@ -73,10 +87,19 @@
                $linkPostTagQuery = "INSERT INTO post_tags (post_id, tag_id)
                VALUES ('$last_post_id', '$tag_id')";
                $postTagResult = mysqli_query($conn, $linkPostTagQuery);
+               if (mysqli_error($conn) > ""){
+                 $query_error = true;
+               }
             }
          }
       }
-      //3 queries, 1 for posts, user_posts and tags
+   }
+
+   if ($query_error){
+     mysqli_rollback($conn);
+   }
+   else {
+     mysqli_commit($conn);
    }
 ?>
 

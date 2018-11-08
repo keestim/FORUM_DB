@@ -15,6 +15,7 @@
    IsLoggedIn($conn);
    DatabaseExists($conn);
    include('header.inc');
+   $query_error = false;
 
    $user_id = $_SESSION['id'];
 
@@ -22,6 +23,9 @@
      $query = "SELECT * FROM users
      WHERE user_id = '$user_id'";
      $result = mysqli_query($conn, $query);
+     if (mysqli_error($conn) > ""){
+       $query_error = true;
+     }
 
      if (mysqli_num_rows($result)==0){
        //header("Location: index.php");
@@ -35,6 +39,10 @@
               WHERE user_id = '$user_id'
               SET user_password = $new_password";
               $update = mysqli_query($conn, $update_password_query);
+              if (mysqli_error($conn) > ""){
+                $query_error = true;
+              }
+
               echo "password successfully updated!";
             }
             else{
@@ -61,6 +69,9 @@
      SET user_first_name = '$first_name', user_last_name = '$last_name', user_display_name = '$display_name', user_dob = '$dob'
      WHERE user_id = $user_id";
      $result = mysqli_query($conn, $query);
+     if (mysqli_error($conn) > ""){
+       $query_error = true;
+     }
    }
 ?>
 
@@ -70,6 +81,10 @@
 $user_data_query = "SELECT * FROM users
 WHERE user_id = '$user_id'";
 $result = mysqli_query($conn, $user_data_query);
+if (mysqli_error($conn) > ""){
+  $query_error = true;
+}
+
 while ($output = mysqli_fetch_assoc($result)){
   $first_name = $output['user_first_name'];
   $last_name = $output['user_last_name'];
@@ -84,6 +99,13 @@ while ($output = mysqli_fetch_assoc($result)){
   echo "<input type='submit' name='update_details'/>";
   echo "</form>";
   echo "</div>";
+}
+
+if ($query_error){
+  mysqli_rollback($conn);
+}
+else {
+  mysqli_commit($conn);
 }
 ?>
 

@@ -17,9 +17,15 @@ DatabaseExists($conn);
 
 include('header.inc');
 
+$query_error = false;
+
 $user_id = $_SESSION['id'];
 $query = "SELECT * FROM users WHERE user_id = '$user_id'";
 $result = mysqli_query($conn, $query);
+if (mysqli_error($conn) > ""){
+  $query_error = true;
+}
+
 if (mysqli_num_rows($result)==0){
   header("Location: ./login.php");
 }
@@ -40,11 +46,21 @@ WHERE following.user_id = '$user_id'
 ORDER BY posts.post_date DESC";
 
 $result = mysqli_query($conn, $query);
+if (mysqli_error($conn) > ""){
+  $query_error = true;
+}
 
 if (mysqli_num_rows($result)==0){
 }
 while ($row = mysqli_fetch_assoc($result)){
    DisplayPostSummary($row, $conn);
+}
+
+if ($query_error){
+  mysqli_rollback($conn);
+}
+else {
+  mysqli_commit($conn);
 }
 ?>
 
