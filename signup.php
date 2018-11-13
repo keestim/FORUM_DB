@@ -42,7 +42,7 @@
 
      $email = $_POST["email"];
      $email = check_isset($email);
-     if (!preg_match("/^([0-9]|[A-Z]|[a-z]|[\.]|[\-]){1,}[@]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}([\.]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}){1,4}$/", $email)){
+     if (!preg_match("/^([0-9]|[A-Z]|[a-z]|[\.]|[\-]|[\_]){1,}[@]([A-Z]|[a-z]|[0-9]|[\.]|[\-]|[\_]){1,}([\.]([A-Z]|[a-z]|[0-9]|[\.]|[\-]|[\_]){1,}){1,4}$/", $email)){
        $err_message .= "Please follow the correct format for an email address </br>";
      }
 
@@ -98,7 +98,7 @@
          }
       }
       else {
-        echo "Our display name is already taken, please choose another one";
+        echo "Your choosen display name is already taken, please choose another one";
       }
      }
   }
@@ -119,7 +119,7 @@
       <h2>Display Name</h2>
       <input type="text" pattern="([A-Z]|[a-z]|[0-9]|[_]|[-]){4,50}" name="display_name" required='required'/>
       <h2>Email</h2>
-      <input type="text" pattern="^([0-9]|[A-Z]|[a-z]|[\.]|[\-]){1,}[@]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}([\.]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}){1,4}$" name="email"  required='required'/>
+      <input type="text" pattern="^([0-9]|[A-Z]|[a-z]|[\.]|[\-]|[\_]){1,}[@]([A-Z]|[a-z]|[0-9]|[\.]|[\-]|[\_]){1,}([\.]([A-Z]|[a-z]|[0-9]|[\.]|[\-]|[\_]){1,}){1,4}$" name="email"  required='required'/>
       <p>Please Use 8 characters (minimum), a Upper Case letter, a Lower Case Letter and a Number in your password (NO SPECIAL CHARACTERS)</p>
       <h2>Password</h2>
       <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,100}$" name="password"  required='required'/>

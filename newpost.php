@@ -96,9 +96,15 @@
    }
 
    if ($query_error){
+     if (isset($_POST['content'])){
+     echo "Post wasn't able to be created";
+   }
      mysqli_rollback($conn);
    }
    else {
+     if (isset($_POST['content'])){
+       echo "Post successfully created";
+     }
      mysqli_commit($conn);
    }
 ?>

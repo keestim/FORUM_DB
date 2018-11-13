@@ -7,7 +7,7 @@ function DisplayPostSummary($assoc, $conn){
    echo "<p>" . getPostTags($conn, $assoc['post_id']) . "</p><hr/>";
 
    if (strlen($assoc['post_content']) > 100){
-   echo "<p>" . nl2br(substr($assoc['post_content'], 95)) . "...</p><hr/>";
+   echo "<p>" . nl2br(substr($assoc['post_content'], 0, 95)) . "...</p><hr/>";
   }
   else {
     echo "<p>" . nl2br($assoc['post_content']) . "</p><hr/>";
@@ -36,7 +36,7 @@ function getPostTags($conn, $post_id){
   }
 }
 
-//deletes a post and all its given data 
+//deletes a post and all its given data
 function DeletePost($conn, $post_id){
   $query_a = "DELETE FROM user_posts WHERE post_id = '$post_id'";
   $result = mysqli_query($conn, $query_a);

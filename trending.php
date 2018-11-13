@@ -18,7 +18,7 @@ $query_error = false;
 ?>
 
 <?php
-   echo "<h1>TOP 10 POST</h1>";
+   echo "<h1>TOP 10 POSTS</h1>";
    $query = "SELECT * FROM posts ORDER BY view_count DESC LIMIT 10";
    $result = mysqli_query($conn, $query);
    if (mysqli_error($conn) > ""){
