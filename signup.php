@@ -36,13 +36,13 @@
 
      $display_name = $_POST["display_name"];
      $display_name = check_isset($display_name);
-     if (!preg_match("/([A-Z]|[a-z]|[\_]|[\-]){4,50}/", $display_name)){
+     if (!preg_match("/([A-Z]|[a-z]|[0-9]|[\_]|[\-]){4,50}/", $display_name)){
        $err_message .= "Please only use letters, hyphens and under scores for the display_name!  <br/>";
      }
 
      $email = $_POST["email"];
      $email = check_isset($email);
-     if (!preg_match("/([A-Z]|[a-z]){1,}/", $email)){
+     if (!preg_match("/^([0-9]|[A-Z]|[a-z]|[\.]|[\-]){1,}[@]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}([\.]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}){1,4}$/", $email)){
        $err_message .= "Please follow the correct format for an email address </br>";
      }
 
@@ -69,7 +69,13 @@
       $query = "SELECT COUNT(user_display_name) FROM users WHERE user_display_name = '$display_name'";
       $result = mysqli_query($conn, $query);
 
-      if (mysqli_num_rows($result) == 0){
+      if (mysqli_num_rows($result) > 0){
+        while ($output = mysqli_fetch_assoc($result)){
+           $num = $output['COUNT(user_display_name)'];
+        }
+      }
+
+      if (intval($num) == 0){
          $query = "INSERT INTO users (user_first_name, user_last_name, user_display_name, user_email, user_password, user_dob)
          VALUES ('$first_name', '$last_name', '$display_name', '$email', '$password', '$dob')";
          $result = mysqli_query($conn, $query);
@@ -92,7 +98,7 @@
          }
       }
       else {
-        echo "Your display name is already taken, please choose another one";
+        echo "Our display name is already taken, please choose another one";
       }
      }
   }
@@ -111,9 +117,10 @@
       <hr/>
 
       <h2>Display Name</h2>
-      <input type="text" pattern="([A-Z]|[a-z]|[/_]|[/-]){4,50}" name="display_name" required='required'/>
+      <input type="text" pattern="([A-Z]|[a-z]|[0-9]|[_]|[-]){4,50}" name="display_name" required='required'/>
       <h2>Email</h2>
-      <input type="text" pattern="^([A-Z]|[a-z]|[\.]|[\-]){1,}[@]([A-Z]|[a-z]|[\.]|[\-]){1,}([\.]([A-Z]|[a-z]|[\.]|[\-]){1,}){1,2}$" name="email"  required='required'/>
+      <input type="text" pattern="^([0-9]|[A-Z]|[a-z]|[\.]|[\-]){1,}[@]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}([\.]([A-Z]|[a-z]|[0-9]|[\.]|[\-]){1,}){1,4}$" name="email"  required='required'/>
+      <p>Please Use 8 characters (minimum), a Upper Case letter, a Lower Case Letter and a Number in your password (NO SPECIAL CHARACTERS)</p>
       <h2>Password</h2>
       <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,100}$" name="password"  required='required'/>
       <h2>Confirm Password</h2>

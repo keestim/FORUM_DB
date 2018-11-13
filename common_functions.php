@@ -1,5 +1,5 @@
 <?php
-
+//displays the content for a given post
 function DisplayPostSummary($assoc, $conn){
    echo "<div class='post_summary'>";
    echo "<h2>" . $assoc['post_title'] . "</h2>";
@@ -15,6 +15,7 @@ function DisplayPostSummary($assoc, $conn){
    echo "<p><a href=viewpost.php?post_id=" . $assoc['post_id'] . ">VIEW POST</a></p>";
    echo "</div>";
 }
+
 
 function getPostTags($conn, $post_id){
   $query = "SELECT * FROM post_tags
@@ -35,7 +36,7 @@ function getPostTags($conn, $post_id){
   }
 }
 
-
+//deletes a post and all its given data 
 function DeletePost($conn, $post_id){
   $query_a = "DELETE FROM user_posts WHERE post_id = '$post_id'";
   $result = mysqli_query($conn, $query_a);
@@ -62,9 +63,19 @@ function DeletePost($conn, $post_id){
 
   $query_e = "DELETE FROM posts WHERE post_id = '$post_id'";
   $result = mysqli_query($conn, $query_e);
+  mysqli_commit($conn);
 }
 
 function PrintReplies($conn, $post_id){
+  $query_num_comment = "SELECT COUNT(post_id) FROM user_comments WHERE post_id = '$post_id'";
+  $result_num_comments = mysqli_query($conn, $query_num_comment);
+
+  if (mysqli_num_rows($result_num_comments) != 0){
+      while($output = mysqli_fetch_assoc($result_num_comments)){
+        $num_comments = $output['COUNT(post_id)'];
+      }
+  }
+
   $query = "SELECT * FROM user_comments
   INNER JOIN comments ON user_comments.comment_id = comments.comment_id
   INNER JOIN users ON comments.user_id = users.user_id
@@ -73,7 +84,7 @@ function PrintReplies($conn, $post_id){
   $result = mysqli_query($conn, $query);
 
   if (mysqli_num_rows($result) != 0){
-  echo "Number of Comments: " . mysqli_num_rows($result) . "<br/>";
+  echo "Number of Comments: " . $num_comments . "<br/>";
     while ($output = mysqli_fetch_assoc($result)){
         //INITIAL DATA
         echo "<div class='comment'>";
@@ -107,15 +118,18 @@ function GetReplies($conn, $reply_id){
 
 function DeleteComment($conn, $comment_id){
   $query_a = "DELETE FROM user_comments WHERE comment_id = '$comment_id'";
-  $result = mysqli_query($conn, $query_a);
+  $result_a = mysqli_query($conn, $query_a);
 
   $query_b = "DELETE FROM comments WHERE reply_comment_id = '$comment_id'";
-  $result = mysqli_query($conn, $query_b);
+  $result_b = mysqli_query($conn, $query_b);
 
   $query_c = "DELETE FROM comments WHERE comment_id = '$comment_id'";
-  $result = mysqli_query($conn, $query_c);
+  $result_C = mysqli_query($conn, $query_c);
+  mysqli_commit($conn);
+
 }
 
+//displays when a associative array is provided
 function DisplayComment($output_array){
   echo "<p><strong>" . $output_array['comment_text'] . "</strong><p/>";
   echo "<p>posted: " . $output_array['commented_date'] . "</p>";

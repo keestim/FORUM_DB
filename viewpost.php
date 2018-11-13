@@ -40,7 +40,6 @@
          if (mysqli_error($conn) > ""){
            $query_error = true;
          }
-
       }
 
       $query = "SELECT * FROM posts

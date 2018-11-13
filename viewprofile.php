@@ -45,6 +45,7 @@
 
    //checks if the user is being followed currently or isn't being followed
    switch ($_POST['follow']){
+     //if the user is being follow and want to unfollow
      case 0:
      $query = "DELETE FROM following WHERE user_id = " . $_SESSION['id'] . " AND followed_user_id = " . $_GET['profile_id'];
      $result = mysqli_query($conn, $query);
@@ -53,6 +54,7 @@
      }
        break;
 
+       //if the user isn't being folloed and the user wants to follow them
       case 1:
       $following_id = $_GET['profile_id'];
       $user_id = $_SESSION['id'];
